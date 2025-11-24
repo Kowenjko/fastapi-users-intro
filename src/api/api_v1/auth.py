@@ -18,6 +18,7 @@ router = APIRouter(prefix=settings.api.v1.auth, tags=["Auth"])
 router.include_router(
     router=fastapi_users.get_auth_router(
         authentication_backend,
+        # requires_verification=True,
     ),
 )
 
