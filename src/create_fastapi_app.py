@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
 from core.models import db_helper
+from errors_handlers import register_errors_handlers
 
 
 @asynccontextmanager
@@ -23,5 +24,7 @@ def create_app(
     )
     if create_custom_static_urls:
         pass
+
+    register_errors_handlers(app)
 
     return app
