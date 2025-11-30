@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 import logging
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import ORJSONResponse
 
 from core.config import settings
@@ -10,6 +10,8 @@ from core.config import settings
 from api import router as api_router
 from core.models import db_helper
 from api.webhooks import webhooks_router
+
+from utils.templates import templates
 
 
 logging.basicConfig(
@@ -34,6 +36,15 @@ main_app = FastAPI(
 main_app.include_router(
     api_router,
 )
+
+
+@main_app.get("/")
+def index_page(request: Request):
+    return templates.TemplateResponse(
+        name="index.html",
+        request=request,
+    )
+
 
 main_app.webhooks.include_router(webhooks_router)
 
