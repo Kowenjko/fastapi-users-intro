@@ -4,6 +4,7 @@ from fastapi.responses import ORJSONResponse
 
 from core.models import db_helper
 from errors_handlers import register_errors_handlers
+from middlewares import register_middlewares
 
 
 @asynccontextmanager
@@ -26,5 +27,5 @@ def create_app(
         pass
 
     register_errors_handlers(app)
-
+    register_middlewares(app)
     return app
