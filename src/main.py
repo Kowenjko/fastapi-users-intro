@@ -1,15 +1,17 @@
-from contextlib import asynccontextmanager
 import logging
 
 import uvicorn
+
 from fastapi import FastAPI, Request
 from fastapi.responses import ORJSONResponse
+
 
 from core.config import settings
 
 from api import router as api_router
-from core.models import db_helper
+
 from api.webhooks import webhooks_router
+from create_fastapi_app import create_app
 
 from utils.templates import templates
 
@@ -20,23 +22,7 @@ logging.basicConfig(
 )
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # startup
-    yield
-    # shutdown
-    await db_helper.dispose()
-
-
-main_app = FastAPI(
-    default_response_class=ORJSONResponse,
-    lifespan=lifespan,
-    # webhooks=webhooks_router,
-)
-main_app.include_router(
-    api_router,
-)
-
+main_app = create_app()
 
 @main_app.get("/")
 def index_page(request: Request):
@@ -45,6 +31,8 @@ def index_page(request: Request):
         request=request,
     )
 
+
+main_app.include_router(api_router)
 
 main_app.webhooks.include_router(webhooks_router)
 
