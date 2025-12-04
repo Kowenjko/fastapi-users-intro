@@ -11,6 +11,7 @@ from core.config import settings
 from api import router as api_router
 
 from api.webhooks import webhooks_router
+from views import router as views_routers
 from create_fastapi_app import create_app
 
 from utils.templates import templates
@@ -24,16 +25,9 @@ logging.basicConfig(
 
 main_app = create_app()
 
-@main_app.get("/")
-def index_page(request: Request):
-    return templates.TemplateResponse(
-        name="index.html",
-        request=request,
-    )
-
 
 main_app.include_router(api_router)
-
+main_app.include_router(views_routers)
 main_app.webhooks.include_router(webhooks_router)
 
 if __name__ == "__main__":
