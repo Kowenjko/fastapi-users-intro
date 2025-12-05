@@ -2,6 +2,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
+from sqladmin import Admin
+
+from admin import register_admin_views
+
 from core.models import db_helper
 from errors_handlers import register_errors_handlers
 from middlewares import register_middlewares
@@ -28,4 +32,10 @@ def create_app(
 
     register_errors_handlers(app)
     register_middlewares(app)
+
+    admin = Admin(
+        app=app,
+        session_maker=db_helper.session_factory,
+    )
+    register_admin_views(admin)
     return app

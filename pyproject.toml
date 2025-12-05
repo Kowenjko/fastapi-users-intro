@@ -16,6 +16,7 @@ dependencies = [
     "orjson>=3.11.4",
     "pydantic-settings>=2.11.0",
     "pydantic[email]>=2.12.4",
+    "sqladmin[full]>=0.22.0",
     "sqlalchemy[asyncio]>=2.0.44",
     "uvicorn>=0.38.0",
 ]
